@@ -32,11 +32,11 @@ const EditForm = () => {
     const handleTestApi = async () => {
         const options = {
             method: 'GET',
-            url: 'https://weatherapi-com.p.rapidapi.com/current.json',
+            url: import.meta.env.VITE_TEST_API_URL,
             params: { q: city },
             headers: {
-                'X-RapidAPI-Key': 'e9c60e3232msh4906841eebcc1edp180f0ajsna35e35318a0a',
-                'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com',
+                'X-RapidAPI-Key': import.meta.env.VITE_TEST_API_URL_KEY,
+                'X-RapidAPI-Host': import.meta.env.VITE_TEST_API_URL_HOST,
             }
         };
 

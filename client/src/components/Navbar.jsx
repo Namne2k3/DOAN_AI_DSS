@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/userContext';
 import { useContext } from 'react';
 import axios from 'axios'
+import { optionCitySearch } from '../api';
 const Navbar = () => {
 
     const navigate = useNavigate();
@@ -17,18 +18,7 @@ const Navbar = () => {
     const { user, setUser } = useContext(UserContext)
 
     const handleFetchLocationCity = async () => {
-        const options = {
-            method: 'GET',
-            url: 'https://weather338.p.rapidapi.com/locations/search',
-            params: {
-                query: prompt,
-                language: 'en-US'
-            },
-            headers: {
-                'X-RapidAPI-Key': '80e5c5a195mshe603234bd5ff9b0p146bdbjsnda3c6432995c',
-                'X-RapidAPI-Host': 'weather338.p.rapidapi.com',
-            }
-        };
+        const options = optionCitySearch(prompt)
         try {
             const response = await axios.request(options);
             console.log(response.data.location);

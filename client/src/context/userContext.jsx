@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import axios from "axios";
@@ -22,6 +23,7 @@ const UserProvider = ({ children }) => {
                 console.log(err);
             }
         }
+        // console.log("Check process.env >>> ", import.meta.env.VITE_TEST);
         getUser();
     }, [])
 

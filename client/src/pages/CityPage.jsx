@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import CardWeather from '../components/CardWeather';
 import CardContainer from '../components/CardContainer';
+import { optionCityDetail, optionCityForecast } from '../api';
 const CityPage = () => {
     const { id } = useParams();
 
@@ -27,21 +27,23 @@ const CityPage = () => {
         }
 
         const handleFetchCityForeCast = async () => {
-            const options = {
-                method: 'GET',
-                url: 'https://weather338.p.rapidapi.com/weather/forecast',
-                params: {
-                    date: convertDate(),
-                    latitude: city.lat,
-                    longitude: city.long,
-                    language: 'en-US',
-                    units: 'm'
-                },
-                headers: {
-                    'X-RapidAPI-Key': '80e5c5a195mshe603234bd5ff9b0p146bdbjsnda3c6432995c',
-                    'X-RapidAPI-Host': 'weather338.p.rapidapi.com',
-                }
-            };
+
+            const options = optionCityForecast(convertDate(), city.lat, city.long);
+            // const options = {
+            //     method: 'GET',
+            //     url: 'https://weather338.p.rapidapi.com/weather/forecast',
+            //     params: {
+            //         date: convertDate(),
+            //         latitude: city.lat,
+            //         longitude: city.long,
+            //         language: 'en-US',
+            //         units: 'm'
+            //     },
+            //     headers: {
+            //         'X-RapidAPI-Key': '80e5c5a195mshe603234bd5ff9b0p146bdbjsnda3c6432995c',
+            //         'X-RapidAPI-Host': 'weather338.p.rapidapi.com',
+            //     }
+            // };
 
             try {
                 const response = await axios.request(options);
@@ -59,18 +61,7 @@ const CityPage = () => {
 
         const handleFetchCityDetail = async () => {
 
-            const options = {
-                method: 'GET',
-                url: 'https://weather338.p.rapidapi.com/locations/get-details',
-                params: {
-                    placeid: id,
-                    language: 'en-US'
-                },
-                headers: {
-                    'X-RapidAPI-Key': '80e5c5a195mshe603234bd5ff9b0p146bdbjsnda3c6432995c',
-                    'X-RapidAPI-Host': 'weather338.p.rapidapi.com',
-                }
-            };
+            const options = optionCityDetail(id)
 
             try {
                 const response = await axios.request(options);

@@ -24,7 +24,7 @@ const Login = () => {
                 console.log("Check login userData >>> ", res);
 
                 setUser(res.data);
-
+                alert("Login successfully")
                 navigate('/')
             }
         }

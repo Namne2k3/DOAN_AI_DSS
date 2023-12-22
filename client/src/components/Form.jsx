@@ -7,6 +7,7 @@ import { useFormAction, useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from '../context/userContext';
+import { optionCitySearch } from '../api';
 const Form = () => {
 
     const [city, setCity] = useState('')
@@ -16,18 +17,7 @@ const Form = () => {
 
     const { user, setUser } = useContext(UserContext)
     const handleTestApi = async () => {
-        const options = {
-            method: 'GET',
-            url: 'https://weather338.p.rapidapi.com/locations/search',
-            params: {
-                query: city,
-                language: 'en-US'
-            },
-            headers: {
-                'X-RapidAPI-Key': '80e5c5a195mshe603234bd5ff9b0p146bdbjsnda3c6432995c',
-                'X-RapidAPI-Host': 'weather338.p.rapidapi.com',
-            }
-        };
+        const options = optionCitySearch(city)
 
         try {
             const response = await axios.request(options);
@@ -113,8 +103,8 @@ const Form = () => {
                         </button>
                         <Link to='/'>
                             <button
-                                onClick={() => changeNav(nav)}
-                                className=" h-10 px-5 text-indigo-100 bg-indigo-700 rounded-lg transition-colors duration-150 focus:shadow-outline hover:bg-indigo-800"
+                                onClick={() => navigate('/')}
+                                className=" h-10 px-5 text-indigo-100 bg-red-500 rounded-lg transition-colors duration-150 focus:shadow-outline hover:bg-indigo-800"
                             >
                                 Cancel
                             </button>
