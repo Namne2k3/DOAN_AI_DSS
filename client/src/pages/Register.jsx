@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { FaBlog } from 'react-icons/fa'
 import axios from 'axios'
 import { URL } from '../../url'
 const Register = () => {
@@ -10,23 +9,22 @@ const Register = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [err, setErr] = useState(false)
-    const navigate = useNavigate();
     //console.log(username, email, password);
+
+    const navigate = useNavigate();
 
     const handleRegister = async () => {
         try {
             const newUser = { username, email, password }
             const res = await axios.post(`${URL}/api/auth/register`, newUser)
-            const verified = await axios.post(`${URL}/api/auth/verify`, res.data)
-            if (verified) {
-                alert("Register Successfully")
-                console.log("Check ResData >>> ", res.data);
-                // window.location.href = '/login'
-            }
+            // const verified = await axios.post(`${URL}/api/auth/verify`, res?.data)
+            alert("Register Successfully")
+
+            navigate(`/verify/${res.data._id}`)
 
         } catch (err) {
             setErr(true)
-            console.log(err)
+            console.log(err.response.data.message)
         }
     }
 
@@ -35,7 +33,7 @@ const Register = () => {
             <div className="flex items-center justify-between px-6 md:px-[200px] py-4">
                 <h1 className='text-lg md:text-xl font-extrabold'>
                     <Link to='/' className='flex justify-between items-center gap-[8px]'>
-                        <img src={'../public/logo.png'} alt="Logo" className="max-h-[40px] max-w-[100%] mr-[10px]" />
+                        <img src={'../public/logoNPT_out.png'} alt="Logo" className="max-h-[40px] max-w-[100%] mr-[10px]" />
                         <p>
                             NPT Weather Task
                         </p>

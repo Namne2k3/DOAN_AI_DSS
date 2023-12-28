@@ -8,7 +8,17 @@ const getUser = async (req, res) => {
         res.status(500).json(err)
     }
 }
+const getUserByEmail = async (req, res) => {
+    try {
+        const findUserByEmail = await User.find({ email: req.params.email })
+        res.status(200).json(findUserByEmail)
+    } catch (error) {
+        res.status(500).json(err)
+    }
+}
+
 
 module.exports = {
-    getUser
+    getUser,
+    getUserByEmail
 }

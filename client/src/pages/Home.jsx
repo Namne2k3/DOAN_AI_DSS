@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
-import Navbar from '../components/Navbar'
 import TaskCard from '../components/TaskCard'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'

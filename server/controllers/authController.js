@@ -4,8 +4,7 @@ const jwt = require('jsonwebtoken')
 
 const authRegister = async (req, res) => {
     try {
-        const { username, password, email } = req.body;
-
+        const { username, password, email } = req.body
         // process hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hashSync(password, salt);
@@ -16,7 +15,7 @@ const authRegister = async (req, res) => {
         res.status(200).json(savedUser)
 
     } catch (err) {
-        res.status(500).json(err);
+        res.status(500).json({ message: "Email already existed!" })
     }
 }
 
@@ -24,17 +23,17 @@ const authLogin = async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
         if (!user) {
-            return res.status(404).json("User not found!");
+            return res.status(404).json({ message: "Email not found!" });
         }
 
         if (!user.verified) {
-            return res.status(404).json("User not verified");
+            return res.status(404).json({ message: "Email not verified" });
         }
 
         const match = await bcrypt.compareSync(req.body.password, user.password);
 
         if (!match) {
-            return res.status(401).json("Wrong!");
+            return res.status(401).json({ message: "Wrong password!" });
         }
 
         // authenticate user
@@ -59,7 +58,7 @@ const authLogout = async (req, res) => {
 }
 
 const authRefetch = async (req, res) => {
-    const token = req.cookies.token;
+    const token = req?.cookies?.token;
     jwt.verify(token, process.env.SECRET, {}, async (err, decoded) => {
         if (err) {
             return res.status(404).json(err)

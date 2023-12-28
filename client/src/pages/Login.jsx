@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 import { useState, useContext } from 'react'
-import { Link, useNavigate, redirect } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { URL } from '../../url'
 import { UserContext } from '../context/userContext'
@@ -12,24 +12,26 @@ const Login = () => {
     const [password, setPassword] = useState('')
     const [err, setErr] = useState(false)
 
+    const [notVer, setNotVer] = useState(false);
+    const [tempUser, setTempUser] = useState({})
     const { setUser } = useContext(UserContext)
-
-    const navigate = useNavigate();
 
     const handleLogin = async () => {
         try {
+            const resUser = await axios.get(`${URL}/api/user/email/${email}`)
+            setTempUser(resUser.data[0])
+            console.log("Check userData >>> ", resUser.data[0]);
+
             const res = await axios.post(`${URL}/api/auth/login`, { email, password }, { withCredentials: true })
             if (res) {
-
-                console.log("Check login userData >>> ", res);
-
                 setUser(res.data);
-                alert("Login successfully")
-                navigate('/')
+                alert("Login successfully!")
+                window.location.href = '/'
             }
         }
         catch (err) {
-            console.log(err);
+            setNotVer(true);
+            console.log(err.response.data.message);
         }
     }
 
@@ -38,7 +40,7 @@ const Login = () => {
             <div className="flex items-center justify-between px-6 md:px-[200px] py-4">
                 <h1 className='text-lg md:text-xl font-extrabold'>
                     <Link to='/' className='flex justify-between items-center gap-[8px]'>
-                        <img src={'../public/logo.png'} alt="Logo" className="max-h-[40px] max-w-[100%] mr-[10px]" />
+                        <img src={'../public/logoNPT_out.png'} alt="Logo" className="max-h-[40px] max-w-[100%] mr-[10px]" />
                         <p>
                             NPT Weather Task
                         </p>
@@ -57,6 +59,14 @@ const Login = () => {
                         <p>Don't have an account?</p>
                         <p className="text-gray-500 hover:text-black"><Link to="/register">Register</Link></p>
                     </div>
+
+                    {
+                        notVer &&
+                        <div>
+                            <p className='text-red-500 font-light'>Email hasn't been verified!</p>
+                            <Link className='text-blue-500 underline' to={`/verify/${tempUser?._id}`}>Click here to verify your email</Link>
+                        </div>
+                    }
                 </div>
             </div>
         </>

@@ -4,13 +4,11 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { useContext } from 'react'
 import { URL } from '../../url'
 const EditForm = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     // console.log("Check Id params >>> ", id);
-    const { nav, changeNav } = useContext(NavContext);
     const [city, setCity] = useState('');
     const [title, setTitle] = useState('')
     const [data, setData] = useState({});
@@ -63,15 +61,8 @@ const EditForm = () => {
                 priority: calculatePriority(data.current),
             }
 
-
             await axios.put(`${URL}/api/tasks/${id}`, task)
-            // redirect("/")
-            changeNav(nav)
-
-            if (nav === 'Important')
-                navigate("/important")
-            else if (nav === 'All Tasks')
-                navigate('/')
+            navigate('/')
 
         } catch (err) {
             console.log(err)
@@ -169,7 +160,6 @@ const EditForm = () => {
                         </button>
                         <Link to='/'>
                             <button
-                                onClick={() => changeNav(nav)}
                                 className="
             h-10
             px-5

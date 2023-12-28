@@ -11,6 +11,7 @@ import Navbar from './components/Navbar.jsx'
 import Register from './pages/Register.jsx'
 import Login from './pages/Login.jsx'
 import { UserProvider } from './context/userContext.jsx'
+import Verify from './pages/Verify.jsx'
 const App = () => {
   return (
     <UserProvider>
@@ -24,6 +25,7 @@ const App = () => {
         <Route exact path='/city/:id' element={<CityPage />} />
         <Route exact path='/register' element={<Register />} />
         <Route exact path='/login' element={<Login />} />
+        <Route exact path='/verify/:id' element={<Verify />} />
       </Routes>
       {/* </NavProvider> */}
     </UserProvider>

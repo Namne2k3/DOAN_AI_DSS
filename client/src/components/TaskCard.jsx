@@ -2,14 +2,12 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
-import { Checkbox } from '@material-tailwind/react';
 import { FaPen } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import axios from 'axios'
-import { useContext } from 'react';
 import { URL } from '../../url';
-import ToggleButton from './ToggleButton';
+import { optionCityForecast } from '../api/apiCityForecast';
 const TaskCard = ({ task }) => {
     const { city, title, _id, isDone, country } = task;
 
@@ -19,23 +17,14 @@ const TaskCard = ({ task }) => {
     const markDone = async () => {
         try {
             await axios.put(`${URL}/api/tasks/${_id}`, { city, title, isDone: !isDone, country })
-
-            console.log("Check pathName and nav >>>", pathname, nav);
             window.location.reload();
-            // if (pathname == '/completed') {
-            //     changeNav('Completed')
-            // } else if (pathname == '/important') {
-            //     changeNav('Important')
-            // } else if (pathname == '') {
-            //     changeNav('/')
-            // }
+
         } catch (err) {
             console.log(err);
         }
     }
 
     const handleCalculatePriority = (temp, humid, windspeed) => {
-
         const weatherData = {
             temperature: temp,
             relativeHumidity: humid,
@@ -50,7 +39,7 @@ const TaskCard = ({ task }) => {
             humidityWeight * weatherData.relativeHumidity -
             windSpeedWeight * weatherData.windSpeed;
 
-        return priorityPoint.toFixed(2) / 100;
+        return priorityPoint.toFixed(2) / 100; // lam tron de chu so thu 2
     }
 
     const handleDelete = async () => {
@@ -115,21 +104,7 @@ const TaskCard = ({ task }) => {
             });
         };
         const handleFetchCityForeCast = async ({ lat, long, updatedAt }) => {
-            const options = {
-                method: 'GET',
-                url: 'https://weather338.p.rapidapi.com/weather/forecast',
-                params: {
-                    date: convertDate(updatedAt),
-                    latitude: lat,
-                    longitude: long,
-                    language: 'en-US',
-                    units: 'm'
-                },
-                headers: {
-                    'X-RapidAPI-Key': '80e5c5a195mshe603234bd5ff9b0p146bdbjsnda3c6432995c',
-                    'X-RapidAPI-Host': 'weather338.p.rapidapi.com'
-                }
-            };
+            const options = optionCityForecast(updatedAt, lat, long)
 
             try {
                 const response = await axios.request(options);
@@ -167,9 +142,6 @@ const TaskCard = ({ task }) => {
                 }
             </div>
             <div className="flex items-center justify-center gap-2">
-
-                {/* disabled button */}
-                {/* <ToggleButton toggle={toggle} setToggle={setToggle} /> */}
                 <Link to={`/edit/${_id}`}>
                     <FaPen size={16} className='hover:cursor-pointer' />
                 </Link>
@@ -179,20 +151,16 @@ const TaskCard = ({ task }) => {
                         handleDelete();
                     }
                 }} size={24} className='hover:cursor-pointer' />
-                {isDone ?
-                    <input type="checkbox" className='w-[20px] h-[20px]' onChange={() => {
-                        markDone();
-                    }} checked />
-                    // <Checkbox width={20} height={20} onChange={() => {
-                    //     markDone();
-                    // }} ripple={true} defaultChecked />
-                    :
-                    // <Checkbox onChange={() => {
-                    //     markDone();
-                    // }} ripple={true} />
-                    <input type="checkbox" className='w-[20px] h-[20px]' onChange={() => {
-                        markDone();
-                    }} />
+                {
+                    isDone
+                        ?
+                        <input type="checkbox" className='w-[20px] h-[20px]' onChange={() => {
+                            markDone();
+                        }} checked />
+                        :
+                        <input type="checkbox" className='w-[20px] h-[20px]' onChange={() => {
+                            markDone();
+                        }} />
                 }
             </div>
         </div>

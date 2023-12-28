@@ -16,7 +16,7 @@ const UserProvider = ({ children }) => {
             try {
                 const res = await axios.get(`${URL}/api/auth/refetch`, { withCredentials: true })
                 if (res) {
-                    console.log("Refetching data User >>> ", res?.data);
+                    // console.log("Refetching data User >>> ", res?.data);
                     setUser(res?.data);
                 }
             } catch (err) {

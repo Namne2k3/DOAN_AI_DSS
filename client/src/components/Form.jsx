@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { URL } from '../../url';
-import { useFormAction, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from '../context/userContext';
@@ -27,21 +27,6 @@ const Form = () => {
             console.error(error);
         }
     }
-
-    // const calculatePriority = (weatherData) => {
-    //     const weights = {
-    //         windSpeed: 0.3,
-    //         humidity: 0.3,
-    //         temperature: 0.4,
-    //     };
-    //     const priorityPoint =
-    //         weights.temperature * weatherData.temp_c +
-    //         weights.humidity * weatherData.humidity -
-    //         weights.windSpeed * weatherData.wind_kph;
-
-    //     return priorityPoint / 100;
-    // }
-
     const handleCreate = async (e) => {
         e.preventDefault();
 

@@ -51,10 +51,10 @@ const Navbar = () => {
     }, 1000);
 
     return (
-        <div className={`${pathname === '/register' || pathname === '/login' && 'hidden'} justify-between md:px-[100px] sm:px-[50px] lg:px-[200px]  flex items-center px-4 py-2 bg-black text-white`}>
+        <div className={`${pathname == '/register' || pathname == '/login' ? 'hidden' : ''} justify-between md:px-[100px] sm:px-[50px] lg:px-[200px]  flex items-center px-4 py-2 bg-black text-white`}>
             <div className="flex">
                 <Link to='/' className='flex justify-between items-center gap-[8px]'>
-                    <img src={'../public/logo.png'} alt="Logo" className="max-h-[40px] max-w-[100%] mr-[10px]" />
+                    <img src={'../public/logoNPT_out.png'} alt="Logo" className="max-h-[40px] max-w-[100%] mr-[10px]" />
                     <p className='font-bold'>
                         NPT Weather Task
                     </p>

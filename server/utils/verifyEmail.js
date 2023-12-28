@@ -3,17 +3,17 @@ const User = require('../models/User')
 const confirmEmail = async (req, res) => {
     try {
         const { userId } = req.params
-        await User.findByIdAndUpdate(userId, { verified: true })
-        res.send("Email Verified!")
+        await User.findByIdAndUpdate(userId, req.body)
+        res.status(200).json("Email Verified!")
     } catch (err) {
         res.status(500).json(err)
     }
 }
 
-const link = `http://localhost:5000/api/auth/confirm`
+// const link = `http://localhost:5000/api/auth/confirm`
 const verifyEmail = async (req, res) => {
 
-    const { email, _id } = req.body;
+    const { email, _id, code } = req.body;
 
     try {
         let config = {
@@ -32,7 +32,7 @@ const verifyEmail = async (req, res) => {
             subject: 'You just sign up NPT Weather task',
             html: `
                 <div>
-                    <a href=${link + '/' + _id}>Click here to verify your email!</a>
+                    <p>Verify - Code: ${code}</p>
                 </div>
             `
         }
