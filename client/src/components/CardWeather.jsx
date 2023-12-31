@@ -11,8 +11,9 @@ const CardWeather = ({
     temperatureMax,
     temperatureMin,
     temperatureNight,
-    prioritypoint,
+    categorizeWeather,
     humidDay,
+    calculateWeatherScore,
     humidNight,
     ccp,
     index,
@@ -20,7 +21,7 @@ const CardWeather = ({
 
     return (
         <div className={`
-        ${prioritypoint(temperatureDay, humidDay, windspeedDay) >= 0.32 || prioritypoint(temperatureNight, humidNight, windspeedNight) >= 0.32
+        ${categorizeWeather(calculateWeatherScore(temperatureDay, humidDay, windspeedDay)) == 'Good' || categorizeWeather(calculateWeatherScore(temperatureNight, humidNight, windspeedNight)) == 'Good'
                 ? 'bg-green-400' : 'bg-orange-400'
             }
             rounded-lg col-span-1 p-4 flex flex-col gap-4`}
@@ -57,8 +58,8 @@ const CardWeather = ({
             <div className="flex flex-col gap-2 p-2 rounded-md bg-[#c1c3c8]">
                 <h1 className="font-semibold font-serif italic ">{ccp}</h1>
                 <h1 className="font-semibold font-serif italic ">tempMax: {temperatureMax}C  -   tempMin: {temperatureMin}C</h1>
-                <h1 className="font-semibold font-serif italic ">Comfort Level Day: {prioritypoint(temperatureDay, humidDay, windspeedDay)}</h1>
-                <h1 className="font-semibold font-serif italic ">Comfort Level Night: {prioritypoint(temperatureNight, humidNight, windspeedNight)}</h1>
+                <h1 className="font-semibold font-serif italic ">Weather Day: {categorizeWeather(calculateWeatherScore(temperatureDay, humidDay, windspeedDay))}</h1>
+                <h1 className="font-semibold font-serif italic ">Weather Night: {categorizeWeather(calculateWeatherScore(temperatureNight, humidNight, windspeedNight))}</h1>
             </div>
         </div>
     )

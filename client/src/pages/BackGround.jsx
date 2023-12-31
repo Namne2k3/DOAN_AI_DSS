@@ -1,4 +1,3 @@
-
 const BackGround = () => {
     return (
         <div className="flex md:h-screen mx-[32px]">

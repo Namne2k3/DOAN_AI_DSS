@@ -3,23 +3,34 @@
 import CardWeather from './CardWeather'
 const CardContainer = ({ data }) => {
 
-    const handleCalculatePriority = (temp, humid, windspeed) => {
+    const normalize = (value, min, max) => {
+        return (value - min) / (max - min);
+    }
 
-        const weatherData = {
-            temperature: temp,
-            relativeHumidity: humid,
-            windSpeed: windspeed,
+    const calculateWeatherScore = (temp, humid, windspeed) => {
+
+        const weightHumidity = 0.3;
+        const weightWindspeed = 0.2;
+        const weightTemperature = 0.5;
+
+        const normalizedHumidity = normalize(humid, 0, 100);
+        const normalizedWindspeed = normalize(windspeed, 0, 10);
+        const normalizedTemperature = normalize(temp, -10, 40);
+
+        const weatherScore =
+            weightHumidity * normalizedHumidity +
+            weightWindspeed * normalizedWindspeed +
+            weightTemperature * normalizedTemperature;
+
+        return weatherScore;
+    }
+
+    const categorizeWeather = (weatherScore) => {
+        if (weatherScore > 0.6) {
+            return "Good";
+        } else {
+            return "Bad";
         }
-
-        const temperatureWeight = 0.4;
-        const humidityWeight = 0.3;
-        const windSpeedWeight = 0.3;
-        const priorityPoint =
-            temperatureWeight * weatherData.temperature +
-            humidityWeight * weatherData.relativeHumidity -
-            windSpeedWeight * weatherData.windSpeed;
-
-        return priorityPoint.toFixed(2) / 100;
     }
 
     return (
@@ -37,7 +48,8 @@ const CardContainer = ({ data }) => {
                         temperatureMax={data?.calendarDayTemperatureMax[index]}
                         temperatureMin={data?.calendarDayTemperatureMin[index]}
                         temperatureNight={data?.daypart[0].temperature[index * 2 + 1]}
-                        prioritypoint={handleCalculatePriority}
+                        categorizeWeather={categorizeWeather}
+                        calculateWeatherScore={calculateWeatherScore}
                         humidDay={data?.daypart[0].relativeHumidity[index * 2]}
                         humidNight={data?.daypart[0].relativeHumidity[index * 2 + 1]}
                         ccp={data?.narrative[index]}
