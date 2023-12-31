@@ -1,7 +1,7 @@
 const optionCityForecast = (date, lat, long) => {
     return {
         method: 'GET',
-        url: import.meta.env.VITE_URL_API,
+        url: import.meta.env.VITE_URL_API_FORECAST,
         params: {
             date: date,
             latitude: lat,

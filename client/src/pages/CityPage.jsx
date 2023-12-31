@@ -29,25 +29,10 @@ const CityPage = () => {
         const handleFetchCityForeCast = async () => {
 
             const options = optionCityForecast(convertDate(), city.lat, city.long);
-            // const options = {
-            //     method: 'GET',
-            //     url: 'https://weather338.p.rapidapi.com/weather/forecast',
-            //     params: {
-            //         date: convertDate(),
-            //         latitude: city.lat,
-            //         longitude: city.long,
-            //         language: 'en-US',
-            //         units: 'm'
-            //     },
-            //     headers: {
-            //         'X-RapidAPI-Key': '80e5c5a195mshe603234bd5ff9b0p146bdbjsnda3c6432995c',
-            //         'X-RapidAPI-Host': 'weather338.p.rapidapi.com',
-            //     }
-            // };
 
             try {
                 const response = await axios.request(options);
-                console.log(response.data);
+                console.log("Check City Forecast >>>", response.data);
                 setinfos({
                     infoCurrent: response.data['v3-wx-observations-current'],
                     infoNext15Days: response.data['v3-wx-forecast-daily-15day'],
@@ -82,7 +67,11 @@ const CityPage = () => {
         handleFetchCityForeCast();
     }, [id, city.lat, city.long])
 
-    const handleCalculatePriority = (infoCurrent) => {
+    const normalize = (value, min, max) => {
+        return (value - min) / (max - min);
+    }
+
+    const calculateWeatherScore = (infoCurrent) => {
 
         const weatherData = {
             temperature: infoCurrent?.temperature,
@@ -90,15 +79,28 @@ const CityPage = () => {
             windSpeed: infoCurrent?.windSpeed,
         }
 
-        const temperatureWeight = 0.4;
-        const humidityWeight = 0.3;
-        const windSpeedWeight = 0.3;
-        const priorityPoint =
-            temperatureWeight * weatherData.temperature +
-            humidityWeight * weatherData.relativeHumidity -
-            windSpeedWeight * weatherData.windSpeed;
+        const weightHumidity = 0.3;
+        const weightWindspeed = 0.2;
+        const weightTemperature = 0.5;
 
-        return priorityPoint.toFixed(2) / 100;
+        const normalizedHumidity = normalize(weatherData.relativeHumidity, 0, 100);
+        const normalizedWindspeed = normalize(weatherData.windSpeed, 0, 10);
+        const normalizedTemperature = normalize(weatherData.temperature, -10, 40);
+
+        const weatherScore =
+            weightHumidity * normalizedHumidity +
+            weightWindspeed * normalizedWindspeed +
+            weightTemperature * normalizedTemperature;
+
+        return weatherScore;
+    }
+
+    const categorizeWeather = (weatherScore) => {
+        if (weatherScore > 0.6) {
+            return "Good";
+        } else {
+            return "Bad";
+        }
     }
 
     return (
@@ -119,7 +121,7 @@ const CityPage = () => {
                         <p className="font-semibold text-[24px]">Relative_Humidity: <span className='font-normal italic'>{infos?.infoCurrent?.relativeHumidity}%</span></p>
                         <p className='font-semibold text-[24px]'>UV_Index: <span className='font-normal italic'>{infos?.infoCurrent?.uvIndex} - {infos?.infoCurrent?.uvDescription}</span></p>
                         <p className='font-semibold text-[24px]'>Wind_Speed: <span className='font-normal italic'>{infos?.infoCurrent?.windSpeed} km/h</span></p>
-                        <p className='font-semibold text-[24px]'>Comfort level: <span className='font-normal italic'>{handleCalculatePriority(infos?.infoCurrent)}</span></p>
+                        <p className='font-semibold text-[24px]'>Weather state: <span className='font-normal italic'>{categorizeWeather(calculateWeatherScore(infos?.infoCurrent))}</span></p>
                     </div>
                 </div>
 
