@@ -12,7 +12,6 @@ const TaskCard = ({ task }) => {
     const { city, title, _id, isDone, country } = task;
 
     const pathname = window.location.pathname
-    // const [toggle, setToggle] = useState(false);
     const [proposeDay, setProposeDay] = useState([])
     const markDone = async () => {
         try {
@@ -24,22 +23,38 @@ const TaskCard = ({ task }) => {
         }
     }
 
-    const handleCalculatePriority = (temp, humid, windspeed) => {
-        const weatherData = {
-            temperature: temp,
-            relativeHumidity: humid,
-            windSpeed: windspeed,
+    const normalize = (value, min, max) => {
+        return (value - min) / (max - min);
+    }
+
+    const calculateWeatherScore = (temp, humid, windspeed) => {
+
+        const weightHumidity = 0.3;
+        const weightWindspeed = 0.2;
+        const weightTemperature = 0.5;
+
+        const normalizedHumidity = normalize(humid, 0, 100);
+        const normalizedWindspeed = normalize(windspeed, 0, 10);
+        const normalizedTemperature = normalize(temp, -10, 40);
+
+        const weatherScore =
+            weightHumidity * normalizedHumidity +
+            weightWindspeed * normalizedWindspeed +
+            weightTemperature * normalizedTemperature;
+
+        return weatherScore;
+    }
+
+    const categorizeWeather = (weatherScore) => {
+        if (weatherScore > 0.8) {
+            return "Excellent";
+        } else if (weatherScore > 0.7) {
+            return "Good";
+        } else if (weatherScore > 0.6) {
+            return "Fair";
+        } else {
+            return "Bad";
         }
-
-        const temperatureWeight = 0.4;
-        const humidityWeight = 0.3;
-        const windSpeedWeight = 0.3;
-        const priorityPoint =
-            temperatureWeight * weatherData.temperature +
-            humidityWeight * weatherData.relativeHumidity -
-            windSpeedWeight * weatherData.windSpeed;
-
-        return priorityPoint.toFixed(2) / 100; // lam tron de chu so thu 2
     }
 
     const handleDelete = async () => {
@@ -72,39 +87,32 @@ const TaskCard = ({ task }) => {
                 const newArray = [...prevProposeDay];
 
                 data?.dayOfWeek.forEach((item, index) => {
-                    if (
-                        handleCalculatePriority(
-                            data?.daypart[0].temperature[index * 2],
-                            data?.daypart[0].relativeHumidity[index * 2],
-                            data?.daypart[0].windSpeed[index * 2]
-                        ) >= 0.32
-                    ) {
+                    categorizeWeather(calculateWeatherScore(
+                        data?.daypart[0].temperature[index * 2],
+                        data?.daypart[0].relativeHumidity[index * 2],
+                        data?.daypart[0].windSpeed[index * 2])) == 'Excellent'
+                        &&
                         newArray.push({
                             date: new Date(data?.validTimeLocal[index]).toLocaleDateString(),
                             dayOrNight: 'Day',
                         });
-                    }
 
-                    if (
-                        handleCalculatePriority(
-                            data?.daypart[0].temperature[index * 2 + 1],
-                            data?.daypart[0].relativeHumidity[index * 2 + 1],
-                            data?.daypart[0].windSpeed[index * 2 + 1]
-                        ) >= 0.32
-                    ) {
+                    categorizeWeather(calculateWeatherScore(
+                        data?.daypart[0].temperature[index * 2 + 1],
+                        data?.daypart[0].relativeHumidity[index * 2 + 1],
+                        data?.daypart[0].windSpeed[index * 2 + 1])) == 'Excellent'
+                        &&
                         newArray.push({
                             date: new Date(data?.validTimeLocal[index]).toLocaleDateString(),
                             dayOrNight: 'Night',
                         });
-                    }
-
                 });
 
                 return newArray;
             });
         };
         const handleFetchCityForeCast = async ({ lat, long, updatedAt }) => {
-            const options = optionCityForecast(updatedAt, lat, long)
+            const options = optionCityForecast(convertDate(updatedAt), lat, long)
 
             try {
                 const response = await axios.request(options);

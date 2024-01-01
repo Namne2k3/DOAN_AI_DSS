@@ -21,8 +21,15 @@ const CardWeather = ({
 
     return (
         <div className={`
-        ${categorizeWeather(calculateWeatherScore(temperatureDay, humidDay, windspeedDay)) == 'Good' || categorizeWeather(calculateWeatherScore(temperatureNight, humidNight, windspeedNight)) == 'Good'
-                ? 'bg-green-400' : 'bg-orange-400'
+        ${categorizeWeather(calculateWeatherScore(temperatureDay, humidDay, windspeedDay)) == 'Excellent' || categorizeWeather(calculateWeatherScore(temperatureNight, humidNight, windspeedNight)) == 'Excellent'
+                ? 'bg-green-400'
+                :
+                categorizeWeather(calculateWeatherScore(temperatureDay, humidDay, windspeedDay)) == 'Good' || categorizeWeather(calculateWeatherScore(temperatureNight, humidNight, windspeedNight)) == 'Good'
+                    ? 'bg-[#e0e34b]'
+                    :
+                    categorizeWeather(calculateWeatherScore(temperatureDay, humidDay, windspeedDay)) == 'Fair' || categorizeWeather(calculateWeatherScore(temperatureNight, humidNight, windspeedNight)) == 'Fair'
+                        ? 'bg-orange-500'
+                        : 'bg-[#ab0f22]'
             }
             rounded-lg col-span-1 p-4 flex flex-col gap-4`}
         >

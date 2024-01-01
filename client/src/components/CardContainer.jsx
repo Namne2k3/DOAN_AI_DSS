@@ -26,12 +26,17 @@ const CardContainer = ({ data }) => {
     }
 
     const categorizeWeather = (weatherScore) => {
-        if (weatherScore > 0.6) {
+        if (weatherScore > 0.8) {
+            return "Excellent";
+        } else if (weatherScore > 0.7) {
             return "Good";
+        } else if (weatherScore > 0.6) {
+            return "Fair";
         } else {
             return "Bad";
         }
     }
+    // categorizeWeather(calculateWeatherScore(28,80,8))
 
     return (
         <div className="grid grid-cols-2 gap-4 mt-4">
