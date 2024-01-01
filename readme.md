@@ -1,3 +1,5 @@
+## The program supports recommending days with good weather
+
 ## Program Description
 
 The program assists users in selecting a suitable day for travel or work based on weather conditions. It utilizes weather information and suggests the most appropriate days for the user.
@@ -21,31 +23,31 @@ The program assists users in selecting a suitable day for travel or work based o
 5. **Interactive Features:**
    - Allow users to add, remove, or edit tasks or cities.
 
-## File Structure
+## Initial Interface
+![Initial Interface](https://raw.githubusercontent.com/Namne2k3/DOAN_AI_DSS/main/images/Initial_US.png)
 
-- **/src**
-  - **index.html:** Main HTML file for the web interface.
-  - **App.jsx:** JavaScript file handling user interactions and API calls.
-  - **index.css:** CSS file for styling the user interface.
+## Login and Register Interface
+![Login Interface](https://raw.githubusercontent.com/Namne2k3/DOAN_AI_DSS/main/images/Login_US.png)
+![Register Interface](https://raw.githubusercontent.com/Namne2k3/DOAN_AI_DSS/main/images/Register_US.png)
 
-## User Interface (Example)
+## Weather Detail Interface
+![Weather Detail Interface](https://raw.githubusercontent.com/Namne2k3/DOAN_AI_DSS/main/images/WeatherDetails_1_US.png)
+![Weather Detail Interface](https://raw.githubusercontent.com/Namne2k3/DOAN_AI_DSS/main/images/WeatherDetails_2_US.png)
 
-```html
-<!doctype html>
-<html lang="en">
+## Main Interface
+![Main Interface](https://raw.githubusercontent.com/Namne2k3/DOAN_AI_DSS/main/images/Main_US.png)
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="./logo.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NPT Weather Task</title>
-</head>
+## How to Run
 
-<body>
-  <div id="root">
-    <!-- User interface content goes here -->
-  </div>
-  <script type="module" src="/src/main.jsx"></script>
-</body>
+Provide instructions on how to run your project locally. Include any dependencies or setup steps.
+```bash
+# Example command to run the project
+cd ./server
+npm run dev
+```
 
-</html>
+```bash
+# Example command to run the project
+cd ./client
+npm run dev
+```
