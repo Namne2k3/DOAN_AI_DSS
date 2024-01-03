@@ -45,8 +45,21 @@ const optionCityDetail = (id) => {
         }
     }
 }
+
+const optionTestApi = (city) => {
+    return {
+        method: 'GET',
+        url: import.meta.env.VITE_TEST_API_URL,
+        params: { q: city },
+        headers: {
+            'X-RapidAPI-Key': import.meta.env.VITE_TEST_API_URL_KEY,
+            'X-RapidAPI-Host': import.meta.env.VITE_TEST_API_URL_HOST,
+        }
+    }
+}
 export {
     optionCityForecast,
     optionCityDetail,
-    optionCitySearch
+    optionCitySearch,
+    optionTestApi
 }

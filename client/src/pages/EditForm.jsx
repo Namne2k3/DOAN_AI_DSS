@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { URL } from '../../url'
+import { optionTestApi } from '../api/apiCityForecast'
 const EditForm = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -28,15 +29,7 @@ const EditForm = () => {
     }
 
     const handleTestApi = async () => {
-        const options = {
-            method: 'GET',
-            url: import.meta.env.VITE_TEST_API_URL,
-            params: { q: city },
-            headers: {
-                'X-RapidAPI-Key': import.meta.env.VITE_TEST_API_URL_KEY,
-                'X-RapidAPI-Host': import.meta.env.VITE_TEST_API_URL_HOST,
-            }
-        };
+        const options = optionTestApi(city);
 
         try {
             const response = await axios.request(options);
@@ -50,18 +43,18 @@ const EditForm = () => {
 
     const handleUpdate = async () => {
         try {
-            const data = await handleTestApi();
+            const data_temp = await handleTestApi();
 
             const task = {
                 city: city,
                 title: title,
-                country: data.location.country,
-                lat: data.location.lat,
-                long: data.location.lon,
-                priority: calculatePriority(data.current),
+                country: data_temp?.location?.country,
+                lat: data_temp?.location?.lat,
+                long: data_temp?.location?.lon,
+                priority: calculatePriority(data_temp?.current),
             }
 
-            await axios.put(`${URL}/api/tasks/${id}`, task)
+            await axios.put(`${URL}/api/tasks/update/${id}`, task)
             navigate('/')
 
         } catch (err) {

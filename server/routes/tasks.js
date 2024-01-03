@@ -10,8 +10,9 @@ taskRouter.get('/', getAllTasks)
 taskRouter.get('/important', getTasksDesc)
 taskRouter.get('/:id', getTaskById)
 taskRouter.get('/user/:userId', getUserPost)
+
 // update
-taskRouter.put('/:id', updateTask)
+taskRouter.put('/update/:id', updateTask)
 
 // delete
 taskRouter.delete('/:id', deleteTask)

@@ -43,7 +43,7 @@ const Form = () => {
         console.log("Check Task >>> ", task);
         try {
             const res = await axios.post(`${URL}/api/tasks/create`, task);
-            console.log("Check res >>> ", res);
+            console.log("Check res saved data >>> ", res);
             navigate('/')
         } catch (err) {
             console.log(err);
